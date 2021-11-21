@@ -12,23 +12,25 @@ import { STAFFS } from '../share/staffs';
 import {Route,Switch,Redirect} from 'react-router-dom';
 
 
-
 class Main extends Component{
   constructor(props){
     super(props);
-
     this.state={
       staffs: STAFFS,
+
     }
+    this.pushStaff=this.pushStaff.bind(this);
   }
-   
+  pushStaff =(newStaff)=> {
+    this.setState({
+      staffs:this.state.staffs.concat([newStaff])
+    })
+  };
   render(){
     const StaffWithId=({match})=>{
       console.log(match.params.staffid)
-      
       return(
         <StaffDetail item={this.state.staffs.filter((item)=> item.id=== parseInt(match.params.staffid,10))[0]}
-        
       />
       )
     }
@@ -37,7 +39,7 @@ class Main extends Component{
         <Header/>
         <Switch>
           <Route exact path="/home" component={Home}/>
-          <Route exact path="/menu" component={()=><Menu staffs={this.state.staffs}/>}/>
+          <Route exact path="/menu" component={()=><Menu staffs={this.state.staffs} pushStaff={this.pushStaff}/>}/>
           <Route exact path="/staff/:staffid" component={StaffWithId}/>
           <Route exact path="/department" component={Department}/>
           <Route exact path="/salary" component={Salary}/> 

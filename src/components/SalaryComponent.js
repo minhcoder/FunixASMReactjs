@@ -1,9 +1,20 @@
 import React, {Component}from 'react';
 import { Breadcrumb, BreadcrumbItem, CardTitle, Card} from 'reactstrap';
 import { Link } from 'react-router-dom';
-import Fade from 'reactstrap/lib/Fade';
 import { DEPARTMENTS, STAFFS } from '../share/staffs';
+import {Loading} from "./LoadingComponent";
+import { Fade } from "react-animation-components";
+import {fetchSalary} from "../redux/ActionCreator";
+import {connect} from 'react-redux'
 
+const mapStateToProps=(state)=>{
+  return {
+    salary: state.salary,
+  }
+}
+const mapDispactchToProps=(dispatch)=>({
+  fetchSalary: (salaryId)=>dispatch(fetchSalary(salaryId))
+})
 class Salary extends Component{
     constructor(props){
         super(props);
@@ -48,4 +59,4 @@ class Salary extends Component{
             </div>
         )
     }}
-    export default Salary;
+    export default connect(mapStateToProps,mapDispactchToProps)(Salary);

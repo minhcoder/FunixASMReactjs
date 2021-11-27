@@ -4,7 +4,9 @@ import dateFormat from 'dateformat';
 import StaffDetail from './StaffDetailComponent';
 import { Loading } from './LoadingComponent';
 import { Link } from 'react-router-dom';
-import { Control, LocalForm, Errors } from 'react-redux-form'
+import { Control, LocalForm, Errors } from 'react-redux-form';
+import { FadeTransform } from "react-animation-components";
+
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !val || val.length <= len;
@@ -18,7 +20,6 @@ class Menu extends Component {
     this.state = {
       staffs: this.props.staffs,
       isModalOpen: false,
-      pushStaff: this.props.pushStaff,
     }
     this.toggleModal = this.toggleModal.bind(this);
     this.searchName = this.searchName.bind(this);
@@ -27,28 +28,30 @@ class Menu extends Component {
   // lọc input value nhận cả chữ hoa lẫn thường 
   searchName(value) {
     const xName = value.name;
-    const result = this.props.staffs.filter((x) =>
+    const result = this.props.staffs.staffs.filter((x) =>
       x.name.toLowerCase().match(xName.toLowerCase())
     );
     this.setState({
-      staffs: result
+      staffs: { ...this.state.staffs, ...{ staffs: result }},
     });
   }
   // thêm nhân viên mới vào
   handelSubmit(value) {
     const newStaff = {
       name: value.fullname,
-      doB: value.dob,
+      doB: value.doB,
       salaryScale: +value.salaryScale,
       startDate: value.startDate,
       departmentId: value.department,
       annualLeave: +value.annualLeave,
       overTime: +value.overTime,
-      image: '/assets/images/nhanvien.png',
+      image: '/asset/images/alberto.png',
     };
-    this.props.pushStaff(newStaff);
-    this.toggleModal()
-    alert("Đã thêm thành công nhân viên" + newStaff.name + "!");
+    this.props.postStaff(newStaff);
+    this.setState({
+      isModalOpen: !this.state.isModalOpen,
+    });
+    alert("Đã thêm thành công nhân viên " + newStaff.name + "!");
   }
   toggleModal() {
     this.setState({
@@ -58,17 +61,19 @@ class Menu extends Component {
   render() {
     const RenderStaff = ({ item }) => {
       return (
+        <FadeTransform in>
         <Card>
-          <Link to={`/staff/${item.id}`}>
+          <Link to={`/menu/${item.id}`}>
             <CardImg width="100%" src={item.image} alt={item.name} />
             <CardTitle className="text-center text-dark">{item.name}</CardTitle>
           </Link>
         </Card>
+        </FadeTransform>
       )
     }
     console.log(this.state.staffs)
 
-    const menu = this.state.staffs?.map((staff) => {
+    const menu = this.state.staffs.staffs.map((staff) => {
       return (
         <div key={staff.id} className="col-lg-2 col-md-4 col-sm-2">
           <RenderStaff item={staff} />
@@ -83,7 +88,18 @@ class Menu extends Component {
           </div>
         </div>
       );
-    } else {
+    } else if(this.state.staffs.errMess){
+      return (
+        <div className="container">
+          <div className="row">
+            <div className="col-12">
+              <h4>{this.state.staffs.errMess}</h4>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    else {
       return (
         <div className="container">
           <div className="row mt-5">
@@ -153,15 +169,15 @@ class Menu extends Component {
                       </Col>
                     </Row>
                     <Row className="form-group">
-                      <Label htmlFor="dob" md={3}>
+                      <Label htmlFor="doB" md={3}>
                         Ngày sinh
                       </Label>
                       <Col md={9}>
                         <Control.text
                           type="date"
-                          model=".dob"
-                          id="dob"
-                          name="dob"
+                          model=".doB"
+                          id="doB"
+                          name="doB"
                           className="form-control"
                           validators={{
                             required,
@@ -169,7 +185,7 @@ class Menu extends Component {
                         />
                         <Errors
                           className="text-danger"
-                          model=".dob"
+                          model=".doB"
                           show="touched"
                           messages={{
                             required: "Không được để trống. ",

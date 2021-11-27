@@ -22,15 +22,23 @@ const mapStateToProps = (state) => {
     staffOfDeparts: state.staffOfDeparts,
   };
 };
-
 const mapDispatchToProps = (dispatch) => ({
   fetchDepartOfStaff: (departId) => dispatch(fetchDepartOfStaff(departId)),
 });
 
 class Staffofdepart extends Component {
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      // data: [],
+      // loaded: false,
+      // placeholder: "Loading"
+    };
+  }
   componentDidMount() {
-    this.props.fetchDepartOfStaff(this.props.departId)
+    console.log("this.props.departId", this.props.match.params.id)
+
+    this.props.fetchDepartOfStaff(this.props.match.params.id)
   }
 
   render() {
@@ -42,16 +50,15 @@ class Staffofdepart extends Component {
             exitTransform: "scale(0.5) translateY(-50%)",
           }}
         >
-        <Card>
-          <Link to={`/menu/${staff.id}`}>
-            <CardImg width="100%" src="/asset/images/alberto.png" alt={staff.name}/>
-            <CardTitle className="text-center">{staff.name}</CardTitle>
-          </Link>
-        </Card>
+          <Card>
+            <Link to={`/menu/${staff.id}`}>
+              <CardImg width="100%" src="/asset/images/alberto.png" alt={staff.name} />
+              <CardTitle className="text-center">{staff.name}</CardTitle>
+            </Link>
+          </Card>
         </FadeTransform>
       );
     };
-
     const menu = this.props.staffOfDeparts.staffOfDeparts.map((staff) => {
       return (
         <div className="col-6 col-md-4 col-lg-2 mb-2" key={staff.id}>
@@ -95,5 +102,6 @@ class Staffofdepart extends Component {
           <div className="row">{menu}</div>
         </div>
       );
-  }}
+  }
+}
 export default connect(mapStateToProps, mapDispatchToProps)(Staffofdepart);

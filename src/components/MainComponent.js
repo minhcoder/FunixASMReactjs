@@ -62,6 +62,7 @@ class Main extends Component{
       />
       )}
     const DepartWithId = ({ match }) => {
+      console.log(match)
       return <Staffofdepart departId={match.params.id} />;
     };
 
@@ -80,11 +81,11 @@ class Main extends Component{
         <Switch>
           <Route exact path="/home" component={HomePage}/>
           <Route exact path="/department" component={()=>(<Department departments={this.props.departments}/>)}/>
-          <Route exact path="/department/:id" component={DepartWithId} />
+          <Route exact path="/department/:id" component={Staffofdepart} />
           <Route exact path="/menu" component={() => (<Menu postStaff={this.props.postStaff} staffs={this.props.staffs}/>)}/>
           <Route exact path="/menu/:id" component={StaffWithId}/>
           <Route exact path="/salary" component={() => <Salary component={SalaryId} />}/>
-          <Redirect to='/home'/>
+          {/* <Redirect to='/home'/> */}
           {/* <Redirect to='/staff'/> */}
         </Switch>
         </CSSTransition>

@@ -170,7 +170,6 @@ export const addDepartments = (departments) => ({
     payload: departments
 });
 export const fetchDepartOfStaff = (departmentId) => (dispatch) => {
-
     dispatch(staffDepartsLoading(true));
 
     return fetch(baseUrl + `departments/${departmentId}`)
@@ -178,7 +177,7 @@ export const fetchDepartOfStaff = (departmentId) => (dispatch) => {
                 if (response.ok) {
                     return response;
                 } else {
-                    var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                    var error = new Error('Error: ' + response.status + ': ' + response.statusText);
                     error.response = response;
                     throw error;
                 }

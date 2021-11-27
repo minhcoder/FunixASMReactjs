@@ -19,7 +19,7 @@ class Department extends Component{
             return(
                 <Fade in className="col-12 col-md-6 col-lg-4" key={department.id}>
                     <Card className="ml-2 mb-4 text-center bg-dark text-light border-light">
-                        <Link to={`/departments/${department.id}`}>
+                        <Link to={`/department/${department.id}`}>
                             <CardText className="m-3 text-warning">
                                 {department.name}
                                 <br/>

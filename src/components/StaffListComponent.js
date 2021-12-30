@@ -4,7 +4,6 @@ import './StaffListComponent.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import dateFormat from 'dateformat';
 import { Collapse, Button, CardBody, Card } from 'reactstrap';
-// bây giờ em muốn làm đc em phải kết hợp 2đk, 1 là cái state luc sáng, 2 là cái id, lưu lai chay di
 
 class Menu extends Component {
     constructor(props) {
